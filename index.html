@@ -17,54 +17,79 @@
   </h1>
 
   <!-- FLOW STEPS -->
-  <div class="grid md:grid-cols-5 gap-4">
+  <main class="max-w-3xl mx-auto px-6 py-16 space-y-6">
 
-    <!-- STEP 1: AGENT REQUEST -->
-    <div class="bg-neutral-900 p-4 rounded-xl border border-white/10">
-      <h2 class="text-sm text-neutral-400 mb-2">1. Agent Request</h2>
-      <p class="text-sm">
-        "Buy API credits from OpenAI for $50"
-      </p>
-    </div>
-
-    <!-- STEP 2: ACTION PLAN -->
-    <div class="bg-neutral-900 p-4 rounded-xl border border-indigo-500/40">
-      <h2 class="text-sm text-indigo-400 mb-2">2. ActionPlan</h2>
-      <div class="text-xs font-mono bg-black/40 p-2 rounded">
-        {
-        <br/> type: "payment",
-        <br/> merchant: "OpenAI",
-        <br/> amount: 50
-        <br/>}
-      </div>
-    </div>
-
-    <!-- STEP 3: GUARDRAIL -->
-    <div class="bg-neutral-900 p-4 rounded-xl border border-green-500/40">
-      <h2 class="text-sm text-green-400 mb-2">3. Guardrail</h2>
-      <p class="text-sm">✔ Validated</p>
-      <p class="text-xs text-neutral-500">Policy check passed</p>
-    </div>
-
-    <!-- STEP 4: APPROVAL -->
-    <div class="bg-neutral-900 p-4 rounded-xl border border-yellow-500/40">
-      <h2 class="text-sm text-yellow-400 mb-2">4. Approval</h2>
-      <button 
-        onclick="approveTx()" 
-        class="mt-2 bg-yellow-500 text-black px-3 py-1 rounded text-sm hover:bg-yellow-400">
-        Approve
-      </button>
-    </div>
-
-    <!-- STEP 5: TX STATUS -->
-    <div id="txBox" class="bg-neutral-900 p-4 rounded-xl border border-white/10">
-      <h2 class="text-sm text-neutral-400 mb-2">5. Transaction</h2>
-      <p id="txStatus" class="text-sm text-neutral-500">
-        Waiting for approval...
-      </p>
-    </div>
-
+  <!-- Step 1: Agent Request -->
+  <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6">
+    <p class="text-xs text-neutral-500 mb-2">STEP 1</p>
+    <h2 class="text-lg font-semibold mb-2">Agent Request</h2>
+    <p class="text-neutral-400 text-sm">
+      "Buy $50 OpenAI API credits"
+    </p>
   </div>
+
+  <!-- Arrow -->
+  <div class="text-center text-neutral-600">↓</div>
+
+  <!-- Step 2: ActionPlan -->
+  <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6">
+    <p class="text-xs text-neutral-500 mb-2">STEP 2</p>
+    <h2 class="text-lg font-semibold mb-3">ActionPlan Preview</h2>
+    
+    <div class="bg-black/60 border border-white/10 rounded-xl p-4 font-mono text-sm">
+      action: "provision_card"<br/>
+      merchant: "OpenAI"<br/>
+      amount: 50<br/>
+      asset: "USDC"
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="text-center text-neutral-600">↓</div>
+
+  <!-- Step 3: Guardrail -->
+  <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6">
+    <p class="text-xs text-neutral-500 mb-2">STEP 3</p>
+    <h2 class="text-lg font-semibold mb-3">Guardrail Status</h2>
+
+    <div class="flex items-center gap-3">
+      <span class="px-3 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-400">
+        ✔ Validated (Code 3)
+      </span>
+      <span class="text-neutral-400 text-sm">
+        Merchant + amount allowed
+      </span>
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div class="text-center text-neutral-600">↓</div>
+
+  <!-- Step 4: Approval -->
+  <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6">
+    <p class="text-xs text-neutral-500 mb-2">STEP 4</p>
+    <h2 class="text-lg font-semibold mb-3">User Approval</h2>
+
+    <button class="bg-white text-black px-6 py-3 rounded-xl font-medium hover:bg-neutral-200 transition">
+      Approve Transaction
+    </button>
+  </div>
+
+  <!-- Arrow -->
+  <div class="text-center text-neutral-600">↓</div>
+
+  <!-- Step 5: Transaction -->
+  <div class="bg-neutral-900 border border-white/10 rounded-2xl p-6">
+    <p class="text-xs text-neutral-500 mb-2">STEP 5</p>
+    <h2 class="text-lg font-semibold mb-3">Transaction Status</h2>
+
+    <div class="flex flex-col gap-2 text-sm">
+      <span class="text-yellow-400">⏳ Pending...</span>
+      <span class="text-neutral-500">tx_hash: 0xA93F...29KD</span>
+    </div>
+  </div>
+
+  </main>
 
   <!-- DIVIDER -->
   <div class="my-10 border-t border-white/10"></div>
