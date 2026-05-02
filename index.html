@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NeuroChain Flow UI</title>
   <script
+src="https://cdn.tailwindcss.com"></script>
+</head>    
 <p class="text-center text-neutral-400 text-sm mb-6">
-Agent → Payment → Validation → Decision → Execution
-</p> src="https://cdn.tailwindcss.com"></script>
-</head>
+Agent → x402 → ActionPlan → Guardrails → Decision → Execution
+</p> 
 
 <body class="bg-neutral-950 text-white font-sans p-6">
 
@@ -39,7 +40,9 @@ Agent → Payment → Validation → Decision → Execution
       <h2 class="text-sm text-blue-400 mb-2">x402 Payment Challenge</h2>
       <p class="text-sm">Payment required before execution</p>
       <p class="text-xs text-neutral-500 mt-1">Amount: 0.02 XLM</p>
-<p class="text-xs text-neutral-500">Payment required before execution</p>
+      <p class="text-xs text-blue-400 mt-1">
+      Challenge → Finalize → Replay Protection
+      </p>
 
       <button onclick="finalizePayment()" class="mt-2 bg-blue-500 px-3 py-1 rounded text-sm hover:bg-blue-400">
         Finalize Payment
@@ -54,11 +57,16 @@ Agent → Payment → Validation → Decision → Execution
       <h2 class="text-sm text-indigo-400 mb-2">ActionPlan</h2>
 <p class="text-xs text-neutral-500">NeuroChain safety checks</p>
       <div class="text-xs font-mono bg-black/40 p-2 rounded">
-        {<br/>
-        type: "payment",<br/>
-        merchant: "OpenAI",<br/>
-        amount: 50<br/>
-        }
+{
+<br/> action: "payment",
+<br/> asset: "XLM",
+<br/> amount: 50,
+<br/> merchant: "OpenAI",
+<br/> network: "Stellar",
+<br/> policy: "standard",
+<br/> audit_id: "AUD-3921",
+<br/> decision: "pending"
+<br/>}
       </div>
     </div>
   </div>
@@ -68,9 +76,11 @@ Agent → Payment → Validation → Decision → Execution
     <div class="absolute -left-3 top-1 w-5 h-5 bg-green-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-green-500/40">
       <h2 class="text-sm text-green-400 mb-2">Guardrails</h2>
-      <p class="text-sm text-green-400">✔ Format Valid</p>
-      <p class="text-sm text-green-400">✔ Balance Check</p>
-      <p class="text-sm text-yellow-400">⚠ Risk Check</p>
+      <p class="text-sm text-green-400">✔ G3: Format Valid</p>
+<p class="text-sm text-green-400">✔ G4: Balance Check</p>
+<p class="text-sm text-yellow-400">⚠ G5: Risk Check</p>
+
+<p class="text-xs text-neutral-500">Policy validation layer</p>
     </div>
   </div>
 
@@ -79,11 +89,18 @@ Agent → Payment → Validation → Decision → Execution
     <div class="absolute -left-3 top-1 w-5 h-5 bg-yellow-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-yellow-500/40">
       <h2 class="text-sm text-yellow-400 mb-2">Decision</h2>
-      <p class="text-xs text-neutral-400 mb-2">Requires approval</p>
 
-      <button onclick="approveTx()" class="bg-yellow-500 text-black px-3 py-1 rounded text-sm hover:bg-yellow-400">
-        Approve
-      </button>
+<p id="decisionState" class="text-xs text-neutral-400 mb-2">
+Requires approval
+</p>
+
+<button onclick="approveTx()" class="bg-yellow-500 text-black px-3 py-1 rounded text-sm hover:bg-yellow-400">
+Approve
+</button>
+
+<button onclick="blockTx()" class="ml-2 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-400">
+Block
+</button>
     </div>
   </div>
 
@@ -121,14 +138,50 @@ function finalizePayment() {
 
   log.innerHTML += "<p>→ x402 challenge issued</p>";
   log.innerHTML += "<p>→ Payment finalized</p>";
+  log.innerHTML += "<p>→ Replay protection verified</p>";
+}
+
+function approveTx() {
+  const status = document.getElementById("txStatus");
+  const log = document.getElementById("log");
+  const decision = document.getElementById("decisionState");
+
+  decision.innerHTML = "🟡 Requires approval";
+  decision.classList.add("text-yellow-400");
+
+  status.innerHTML = "Processing transaction...";
+  status.classList.remove("text-neutral-500");
+  status.classList.add("text-blue-400");
+
+  log.innerHTML += "<p>→ Decision: Requires approval</p>";
+  log.innerHTML += "<p>→ User approved transaction</p>";
 
   setTimeout(() => {
+    decision.innerHTML = "🟢 Approved";
+    decision.classList.remove("text-yellow-400");
+    decision.classList.add("text-green-400");
+
     status.innerHTML = "✔ Success<br/><span class='text-xs text-green-400'>tx_hash: 0xA81F...92BC</span>";
     status.classList.remove("text-blue-400");
     status.classList.add("text-green-400");
 
-    log.innerHTML += "<p>→ Transaction confirmed on-chain</p>";
+    log.innerHTML += "<p>→ Transaction approved</p>";
   }, 2000);
+}
+
+function blockTx() {
+  const status = document.getElementById("txStatus");
+  const log = document.getElementById("log");
+  const decision = document.getElementById("decisionState");
+
+  decision.innerHTML = "🔴 Blocked";
+  decision.classList.add("text-red-400");
+
+  status.innerHTML = "Transaction blocked";
+  status.classList.remove("text-neutral-500");
+  status.classList.add("text-red-400");
+
+  log.innerHTML += "<p>→ Decision: Blocked by guardrails</p>";
 }
 </script>
 
