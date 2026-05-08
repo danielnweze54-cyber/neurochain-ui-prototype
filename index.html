@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NeuroChain Flow UI</title>
   <script
-<p class="text-center text-neutral-400 text-sm mb-6">
-Agent → Payment → Validation → Decision → Execution
-</p> src="https://cdn.tailwindcss.com"></script>
-</head>
-
 <body class="bg-neutral-950 text-white font-sans p-6">
+
+<p class="text-center text-neutral-400 text-sm mb-6">
+Agent → x402 → ActionPlan → Guardrails → Decision → Execution
+  </p>
 
 <div class="max-w-6xl mx-auto">
 
@@ -54,23 +53,75 @@ Agent → Payment → Validation → Decision → Execution
       <h2 class="text-sm text-indigo-400 mb-2">ActionPlan</h2>
 <p class="text-xs text-neutral-500">NeuroChain safety checks</p>
       <div class="text-xs font-mono bg-black/40 p-2 rounded">
-        {<br/>
-        type: "payment",<br/>
-        merchant: "OpenAI",<br/>
-        amount: 50<br/>
-        }
-      </div>
+{
+<br/> kind: "payment",
+<br/> recipient: "openai_api",
+<br/> function: "purchase_credits",
+<br/> args: {
+<br/> &nbsp;&nbsp;amount: 50
+<br/> },
+<br/> network: "stellar",
+<br/> policy: "merchant_allowlist",
+<br/> audit_id: "AUD-3921",
+<br/> decision: "payment_required"
+<br/>}
+</div>
     </div>
   </div>
+  
+  <!-- EXECUTION STATES -->
+<div class="relative">
+  <div class="absolute -left-3 top-1 w-5 h-5 bg-purple-500 rounded-full"></div>
+
+  <div class="bg-neutral-900 p-4 rounded-xl border border-purple-500/40">
+
+    <h2 class="text-sm text-purple-400 mb-4">
+      Execution Scenarios
+    </h2>
+
+    <div class="flex flex-wrap gap-2">
+
+      <button onclick="setScenario('payment_required')" class="bg-blue-500 px-3 py-1 rounded text-xs">
+        payment_required
+      </button>
+
+      <button onclick="setScenario('approved')" class="bg-green-500 px-3 py-1 rounded text-xs">
+        approved
+      </button>
+
+      <button onclick="setScenario('allowlist')" class="bg-red-500 px-3 py-1 rounded text-xs">
+        blocked_exit_3
+      </button>
+
+      <button onclick="setScenario('contract')" class="bg-orange-500 px-3 py-1 rounded text-xs">
+        blocked_exit_4
+      </button>
+
+      <button onclick="setScenario('intent')" class="bg-yellow-500 text-black px-3 py-1 rounded text-xs">
+        blocked_exit_5
+      </button>
+
+      <button onclick="setScenario('replay')" class="bg-purple-600 px-3 py-1 rounded text-xs">
+        replay_blocked
+      </button>
+
+      <button onclick="setScenario('expired')" class="bg-gray-500 px-3 py-1 rounded text-xs">
+        expired
+      </button>
+
+    </div>
+
+  </div>
+</div>
 
   <!-- STEP 4 Guardrails -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-green-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-green-500/40">
       <h2 class="text-sm text-green-400 mb-2">Guardrails</h2>
-      <p class="text-sm text-green-400">✔ Format Valid</p>
-      <p class="text-sm text-green-400">✔ Balance Check</p>
-      <p class="text-sm text-yellow-400">⚠ Risk Check</p>
+      <p class="text-sm text-green-400">
+      <p class="text-sm text-green-400">
+      <p class="text-sm text-yellow-400">
     </div>
   </div>
 
@@ -130,6 +181,89 @@ function finalizePayment() {
     log.innerHTML += "<p>→ Transaction confirmed on-chain</p>";
   }, 2000);
 }
+  function setScenario(type) {
+
+  const status = document.getElementById("txStatus");
+  const log = document.getElementById("log");
+  const decision = document.getElementById("decisionState");
+
+  if (type === "payment_required") {
+
+    decision.innerHTML = "🔵 payment_required";
+    decision.className = "text-blue-400";
+
+    status.innerHTML = "Waiting for x402 payment challenge";
+    status.className = "text-sm text-blue-400";
+
+    log.innerHTML += "<p>→ payment_required triggered</p>";
+  }
+
+  if (type === "approved") {
+
+    decision.innerHTML = "🟢 approved";
+    decision.className = "text-green-400";
+
+    status.innerHTML = "✔ Transaction executed";
+    status.className = "text-sm text-green-400";
+
+    log.innerHTML += "<p>→ execution approved</p>";
+  }
+
+  if (type === "allowlist") {
+
+    decision.innerHTML = "🔴 blocked_exit_3_allowlist";
+    decision.className = "text-red-400";
+
+    status.innerHTML = "Recipient not in allowlist";
+    status.className = "text-sm text-red-400";
+
+    log.innerHTML += "<p>→ allowlist block triggered</p>";
+  }
+
+  if (type === "contract") {
+
+    decision.innerHTML = "🟠 blocked_exit_4_contract_policy";
+    decision.className = "text-orange-400";
+
+    status.innerHTML = "Contract policy violation";
+    status.className = "text-sm text-orange-400";
+
+    log.innerHTML += "<p>→ contract policy block triggered</p>";
+  }
+
+  if (type === "intent") {
+
+    decision.innerHTML = "🟡 blocked_exit_5_intent_safety";
+    decision.className = "text-yellow-400";
+
+    status.innerHTML = "Unsafe or low-confidence intent";
+    status.className = "text-sm text-yellow-400";
+
+    log.innerHTML += "<p>→ intent safety block triggered</p>";
+  }
+
+  if (type === "replay") {
+
+    decision.innerHTML = "🟣 replay_blocked";
+    decision.className = "text-purple-400";
+
+    status.innerHTML = "Replay protection triggered";
+    status.className = "text-sm text-purple-400";
+
+    log.innerHTML += "<p>→ replay protection activated</p>";
+  }
+
+  if (type === "expired") {
+
+    decision.innerHTML = "⚫ expired";
+    decision.className = "text-gray-400";
+
+    status.innerHTML = "Execution request expired";
+    status.className = "text-sm text-gray-400";
+
+    log.innerHTML += "<p>→ request expired</p>";
+  }
+  }
 </script>
 
 </body>
