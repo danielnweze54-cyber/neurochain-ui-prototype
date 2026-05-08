@@ -16,14 +16,18 @@ Agent → x402 → ActionPlan → Guardrails → Decision → Execution
 <div class="max-w-6xl mx-auto">
 
   <!-- HEADER -->
-  <h1 class="text-3xl font-bold mb-10 text-center">
-    NeuroChain Execution Flow
-  </h1>
+  <h1 class="text-4xl font-bold mb-4 text-center">
+  Safe execution layer for AI agents
+</h1>
+
+<p class="text-center text-neutral-400 max-w-2xl mx-auto mb-10">
+  NeuroChain validates, blocks, or approves agent actions using policy guardrails and x402 verification before execution.
+</p>
 
   <!-- FLOW STEPS -->
   <div class="relative border-l border-white/10 pl-6 space-y-8">
 
-  <!-- STEP 1 Agent Request -->
+  <!-- STEP 1 🤖 Agent Request -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-white rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-white/10">
@@ -33,7 +37,7 @@ Agent → x402 → ActionPlan → Guardrails → Decision → Execution
     </div>
   </div>
 
-  <!-- STEP 2: x402 Payment -->
+  <!-- STEP 2: 💳 x402 Payment -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-blue-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-blue-500/40">
@@ -50,7 +54,7 @@ Agent → x402 → ActionPlan → Guardrails → Decision → Execution
     </div>
   </div>
 
-  <!-- STEP 3 ActionPlan -->
+  <!-- STEP 3 📋 ActionPlan -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-indigo-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-indigo-500/40">
@@ -71,20 +75,20 @@ Agent → x402 → ActionPlan → Guardrails → Decision → Execution
     </div>
   </div>
 
-  <!-- STEP 4 Guardrails -->
+  <!-- STEP 4 🛡 Guardrails -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-green-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-green-500/40">
       <h2 class="text-sm text-green-400 mb-2">Guardrails</h2>
-      <p class="text-sm text-green-400">✔ G3: Format Valid</p>
-<p class="text-sm text-green-400">✔ G4: Balance Check</p>
-<p class="text-sm text-yellow-400">⚠ G5: Risk Check</p>
+      <p class="text-sm text-red-400">✖ G3: Allowlist Block</p>
+<p class="text-sm text-red-400">✖ G4: Contract Policy Block</p>
+<p class="text-sm text-yellow-400">⚠ G5: Intent Safety / Low Confidence</p>
 
 <p class="text-xs text-neutral-500">Policy validation layer</p>
     </div>
   </div>
 
-  <!-- STEP 5 Decision -->
+  <!-- STEP 5 ⚖ Decision -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-yellow-500 rounded-full"></div>
     <div class="bg-neutral-900 p-4 rounded-xl border border-yellow-500/40">
@@ -104,7 +108,7 @@ Block
     </div>
   </div>
 
-  <!-- STEP 6 Transaction -->
+  <!-- STEP 6 ✅ Transaction -->
   <div class="relative">
     <div class="absolute -left-3 top-1 w-5 h-5 bg-white rounded-full"></div>
     <div id="txBox" class="bg-neutral-900 p-4 rounded-xl border border-white/10">
